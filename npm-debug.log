@@ -1,0 +1,44 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', '-g', 'neoman' ]
+2 info using npm@1.2.10
+3 info using node@v0.8.19
+4 verbose read json /usr/local/lib/package.json
+5 verbose read json /usr/local/lib/package.json
+6 verbose cache add [ 'neoman', null ]
+7 verbose cache add name=undefined spec="neoman" args=["neoman",null]
+8 verbose parsed url { pathname: 'neoman', path: 'neoman', href: 'neoman' }
+9 silly lockFile 0be1878f-neoman neoman
+10 verbose lock neoman /Users/mazjaleel/.npm/0be1878f-neoman.lock
+11 silly lockFile 0be1878f-neoman neoman
+12 silly lockFile 0be1878f-neoman neoman
+13 verbose addNamed [ 'neoman', '' ]
+14 verbose addNamed [ null, '' ]
+15 silly lockFile ed265a30-neoman neoman@
+16 verbose lock neoman@ /Users/mazjaleel/.npm/ed265a30-neoman.lock
+17 silly addNameRange { name: 'neoman', range: '', hasData: false }
+18 verbose url raw neoman
+19 verbose url resolving [ 'https://registry.npmjs.org/', './neoman' ]
+20 verbose url resolved https://registry.npmjs.org/neoman
+21 info trying registry request attempt 1 at 21:13:45
+22 http GET https://registry.npmjs.org/neoman
+23 http 404 https://registry.npmjs.org/neoman
+24 silly registry.get cb [ 404,
+24 silly registry.get   { server: 'CouchDB/1.2.1 (Erlang OTP/R15B03)',
+24 silly registry.get     date: 'Wed, 27 Mar 2013 18:13:50 GMT',
+24 silly registry.get     'content-type': 'application/json',
+24 silly registry.get     'content-length': '52',
+24 silly registry.get     'cache-control': 'must-revalidate' } ]
+25 silly lockFile ed265a30-neoman neoman@
+26 silly lockFile ed265a30-neoman neoman@
+27 error 404 'neoman' is not in the npm registry.
+27 error 404 You should bug the author to publish it
+27 error 404
+27 error 404 Note that you can also install from a
+27 error 404 tarball, folder, or http url, or git url.
+28 error System Darwin 12.2.1
+29 error command "node" "/usr/local/bin/npm" "install" "-g" "neoman"
+30 error cwd /Users/mazjaleel/Documents/Developer/Libs/devkit/projects/SocketTesting
+31 error node -v v0.8.19
+32 error npm -v 1.2.10
+33 error code E404
+34 verbose exit [ 1, true ]

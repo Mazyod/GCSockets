@@ -19,9 +19,30 @@ import ui.TextView as TextView;
 import ui.View as View;
 import ui.widget.ButtonView as ButtonView;
 
+// IMPORTANT: Plug in your local IP address
+var IP_ADDRESS = '192.168.1.118';
+
 exports = Class(GC.Application, function () {
 
 	this.initUI = function () {
+		// Make sure that the user has set his IP
+		if (IP_ADDRESS === '') {
+			new TextView({
+				superview: this.view,
+				layout: 'box',
+				text: 'PLEASE ENTER YOUR IP THROUGH THE CODE!!',
+				layoutWidth: '80%',
+				layoutHeight: '100%',
+				wrap: true,
+				centerX: true,
+				centerY: true,
+				color: '#FFF',
+				size: 40,
+			});
+
+			return;
+		};
+		// The view that encapsulates the menu buttons
 		var menuView = new View({
 			superview: this.view,
 			layoutWidth: '100%',
@@ -30,7 +51,7 @@ exports = Class(GC.Application, function () {
 			direction: 'vertical',
 			justifyContent: 'space-outside'
 		});
-
+		// Simple connect button
 		var connectBtn = new ButtonView({
 			superview: menuView,
 			title: 'Connect',
@@ -49,7 +70,7 @@ exports = Class(GC.Application, function () {
 				up: connect.bind(this)
 			}
 		});
-
+		// simple send button
 		var sendBtn = new ButtonView({
 			superview: menuView,
 			title: 'Send Data',
@@ -67,7 +88,7 @@ exports = Class(GC.Application, function () {
 				up: send.bind(this)
 			}
 		});
-
+		// simple disconnect button
 		var disconnectBtn = new ButtonView({
 			superview: menuView,
 			title: 'Disconnect',
@@ -91,13 +112,12 @@ exports = Class(GC.Application, function () {
 	this.launchUI = function () {};
 
 	// event handlers 
-
 	function connect () {
 		console.log('Connect button tapped');
 
 		// create a socket object:
-		var host = '10.10.13.41';
-		var port = 7878;
+		var host = IP_ADDRESS;
+		var port = 8338;
 
 		import gc.native.socketTransport;
 		var Socket = gc.native.socketTransport.Socket;
