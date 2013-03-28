@@ -8,7 +8,7 @@ import ui.View as View;
 import ui.widget.ButtonView as ButtonView;
 
 //**IMPORTANT:** Plug in your server's IP address
-var ipAddr = '10.10.13.11';
+var ipAddr = '';
 
 //## Class: Application
 //The entry point of the application.
@@ -22,7 +22,7 @@ exports = Class(GC.Application, function () {
 				superview: this.view,
 				backgroundColor: '#000',
 				layout: 'box',
-				text: 'PLEASE ENTER YOUR IP THROUGH THE CODE!!',
+				text: 'PLEASE ENTER SERVER IP THROUGH THE CODE!!',
 				layoutWidth: '80%',
 				layoutHeight: '100%',
 				wrap: true,
