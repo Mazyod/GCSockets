@@ -29,6 +29,7 @@ exports = Class(GC.Application, function () {
 		if (IP_ADDRESS === '') {
 			new TextView({
 				superview: this.view,
+				backgroundColor: '#000',
 				layout: 'box',
 				text: 'PLEASE ENTER YOUR IP THROUGH THE CODE!!',
 				layoutWidth: '80%',
@@ -44,6 +45,7 @@ exports = Class(GC.Application, function () {
 		};
 		// The view that encapsulates the menu buttons
 		this.view.updateOpts({
+			backgroundColor: '#000',
 			layout: 'linear',
 			direction: 'vertical',
 			justifyContent: 'space-outside'

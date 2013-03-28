@@ -67,11 +67,12 @@ Last, but not least, **make sure both your mobile device and PC are connected to
 
 OK, so after you have set everything up, you should have Node.js TCP server running on your local network through terminal, and a GC application deployed on your native device, with both devices connected to the same WiFi network.
 
-Now, go ahead and launch the GCSocets application. You should be presented with the following UI:
+Now, go ahead and launch the GCSocets application. You should be presented with either of the following, depending on whether you set up your server's IP or not:
 
-![Screenshot](http://i1129.photobucket.com/albums/m509/mazyod/download.png "App Screenshot")
+![Screenshot1](http://i1129.photobucket.com/albums/m509/mazyod/download2.png)
+![Screenshot2](http://i1129.photobucket.com/albums/m509/mazyod/download3.png)
 
 Now, keeping your eyes on the Node server and device logs, you can start using the app by pressing "Connect" to connect to the server, "Send Data" to send some dummy data that will be echoed back, and finally "Disconnect" to terminate the session.
 
-
+[img1]: http://i1129.photobucket.com/albums/m509/mazyod/download.png
 
