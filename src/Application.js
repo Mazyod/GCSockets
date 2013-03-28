@@ -20,7 +20,7 @@ import ui.View as View;
 import ui.widget.ButtonView as ButtonView;
 
 // IMPORTANT: Plug in your local IP address
-var IP_ADDRESS = '192.168.1.118';
+var IP_ADDRESS = '';
 
 exports = Class(GC.Application, function () {
 
@@ -124,7 +124,7 @@ exports = Class(GC.Application, function () {
 		// creating a socket object will attempt to connect automatically
 		this._socket = new Socket(host, port);
 		// define dummy event handlers:
-		this._socket.onError = function () { console.log('Error ... :/')}
+		this._socket.onError = function () { console.log('Error ... :/') }
 		this._socket.onClose = function () { console.log('Socket closed') }
 		this._socket.onConnect = function () { console.log('Socket Connected!!') }
 		this._socket.onRead = function (data) { console.log('Socket received Data!!! --> ' + data) }
