@@ -1,32 +1,23 @@
-/* @license
- * This file is part of the Game Closure SDK.
- *
- * The Game Closure SDK is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+//# Basic TCP Client
+//This examples demostrates how to connect to a TCP server to send and receive data.
+//*NOTE: Native ONLY.*
 
- * The Game Closure SDK is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with the Game Closure SDK.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+//Import various useful UI elements
 import ui.TextView as TextView;
 import ui.View as View;
 import ui.widget.ButtonView as ButtonView;
 
-// IMPORTANT: Plug in your local IP address
-var IP_ADDRESS = '';
+//**IMPORTANT:** Plug in your server's IP address
+var ipAddr = '10.10.13.11';
 
+//## Class: Application
+//The entry point of the application.
 exports = Class(GC.Application, function () {
 
 	this.initUI = function () {
-		// Make sure that the user has set his IP
-		if (IP_ADDRESS === '') {
+		//Make sure that the IP has been set
+		if (ipAddr === '') {
+			//Otherwise, display an error
 			new TextView({
 				superview: this.view,
 				backgroundColor: '#000',
@@ -43,18 +34,18 @@ exports = Class(GC.Application, function () {
 
 			return;
 		};
-		// The view that encapsulates the menu buttons
+		//Setup the UI
 		this.view.updateOpts({
 			backgroundColor: '#000',
 			layout: 'linear',
 			direction: 'vertical',
 			justifyContent: 'space-outside'
 		});
-		// Simple buttons with their respective functionality
-		var connectBtn = this._constructMenuButton('Connect', '#666666', connect.bind(this));
-		var sendBtn = this._constructMenuButton('Send Data', '#888888', send.bind(this));
-		var disconnectBtn = this._constructMenuButton('Disconnect', '#AAAAAA', disconnect.bind(this));
-		// a logging area
+		//Simple buttons with their respective functionality
+		var connectBtn = this._menuButton('Connect', '#666666', connect.bind(this));
+		var sendBtn = this._menuButton('Send Data', '#888888', send.bind(this));
+		var disconnectBtn = this._menuButton('Disconnect', '#AAAAAA', disconnect.bind(this));
+		//A logging area
 		this.logArea = new TextView({
 			superview: this.view,
 			layoutWidth: '95%',
@@ -65,8 +56,50 @@ exports = Class(GC.Application, function () {
 			size: 32
 		});
 	};
-	// simple helper function to construct a button
-	this._constructMenuButton = function (text, color, callback) {
+	//Button click event handlers 
+	//Connect button handler
+	function connect () {
+		//Specify the host and port number of the TCP server
+		var host = ipAddr;
+		var port = 8338;
+
+		var logger = _logger.bind(this);
+		logger('Connecting to ' + ipAddr + ':' + port);
+
+		//Create a socket object:
+		//1- Import the native socket library
+		import gc.native.socketTransport;
+		//2- hold a reference to the `Socket` class
+		var Socket = gc.native.socketTransport.Socket;
+		//3- Instantiate a socket by passing the IP and port
+		//NOTE: creating a socket object will attempt to connect automatically
+		this._socket = new Socket(host, port);
+		//Hook the event handlers that will simply update the UI:
+		this._socket.onError = function () { logger('Error ... :/') }
+		this._socket.onClose = function () { logger('Socket closed') }
+		this._socket.onConnect = function () { logger('Connected!') }
+		this._socket.onRead = function (data) { logger('Received Data!\n' + data) }
+	}
+	//Send data button handler
+	function send () {
+		console.log('send button tapped');
+		//Simply call send method on your socket object.
+		this._socket.send('This should work, no?');
+	}
+	//Disconnect button handler
+	function disconnect () {
+		console.log('disconnect button pressed');
+
+		this._socket.close();
+	}
+
+	//A function to help us with the logging process
+	function _logger (text) {
+		var append = this.logArea.getText() + '\n' + text;
+		this.logArea.setText(append);
+	}
+	//Simple helper function to construct a button
+	this._menuButton = function (text, color, callback) {
 		return new ButtonView({
 			superview: this.view,
 			title: text,
@@ -88,34 +121,5 @@ exports = Class(GC.Application, function () {
 	
 	this.launchUI = function () {};
 
-	// event handlers 
-	function connect () {
-		// create a socket object:
-		var host = IP_ADDRESS;
-		var port = 8338;
-
-		var logArea = this.logArea;
-		logArea.setText('Connecting to ' + IP_ADDRESS + ':' + port + '\n');
-
-		import gc.native.socketTransport;
-		var Socket = gc.native.socketTransport.Socket;
-		// creating a socket object will attempt to connect automatically
-		this._socket = new Socket(host, port);
-		// define dummy event handlers that just update the UI:
-		this._socket.onError = function () { logArea.setText(logArea.getText() + 'Error ... :/\n') }
-		this._socket.onClose = function () { logArea.setText(logArea.getText() + 'Socket closed\n') }
-		this._socket.onConnect = function () { logArea.setText(logArea.getText() + 'Socket Connected to ' + IP_ADDRESS + ':' + port + '!\n') }
-		this._socket.onRead = function (data) { logArea.setText(logArea.getText() + 'Socket received Data!\n' + data) }
-	}
-
-	function send () {
-		console.log('send button tapped');
-		this._socket.send('This should work, no?');
-	}
-
-	function disconnect () {
-		console.log('disconnect button pressed');
-		this._socket.close();
-	}
-
 });
+//<img src="./doc/screenshot.png" alt="trail screenshot" class="screenshot">
