@@ -43,91 +43,69 @@ exports = Class(GC.Application, function () {
 			return;
 		};
 		// The view that encapsulates the menu buttons
-		var menuView = new View({
-			superview: this.view,
+		this.view.updateOpts({
 			layoutWidth: '100%',
 			layoutHeight: '100%',
 			layout: 'linear',
 			direction: 'vertical',
 			justifyContent: 'space-outside'
 		});
-		// Simple connect button
-		var connectBtn = new ButtonView({
-			superview: menuView,
-			title: 'Connect',
-			backgroundColor: '#666666',
-			text: {
-				color: '#FFFFFF',
-				size: 32,
-				autoFontSize: false,
-				autoSize: false
-			},
-			layoutWidth: '80%',
-			layoutHeight: '25%',
-			centerX: true,
-			// event handling
-			on : {
-				up: connect.bind(this)
-			}
+		// Simple buttons with their respective functionality
+		var connectBtn = this._constructMenuButton('Connect', '#666666', connect.bind(this));
+		var sendBtn = this._constructMenuButton('Send Data', '#888888', send.bind(this));
+		var disconnectBtn = this._constructMenuButton('Disconnect', '#AAAAAA', disconnect.bind(this));
+		// a logging area
+		this.logArea = new TextView({
+			superview: this.view,
+			layoutWidth: '95%',
+			layoutHeight: '40%',
+			text: 'Press Connect to Start',
+			color: '#FFF',
+			wrap: true,
+			size: 32
 		});
-		// simple send button
-		var sendBtn = new ButtonView({
-			superview: menuView,
-			title: 'Send Data',
-			backgroundColor: '#888888',
-			text: {
-				color: '#FFFFFF',
-				size: 32,
-				autoFontSize: false,
-				autoSize: false
-			},
-			layoutWidth: '80%',
-			layoutHeight: '25%',
-			centerX: true,
-			on : {
-				up: send.bind(this)
-			}
-		});
-		// simple disconnect button
-		var disconnectBtn = new ButtonView({
-			superview: menuView,
-			title: 'Disconnect',
-			backgroundColor: '#AAAAAA',
-			text: {
-				color: '#FFFFFF',
-				size: 32,
-				autoFontSize: false,
-				autoSize: false
-			},
-			layoutWidth: '80%',
-			layoutHeight: '25%',
-			centerX: true,
-			on : {
-				up: disconnect.bind(this)
-			}
-		});
-
 	};
+	// simple helper function to construct a button
+	this._constructMenuButton = function (text, color, callback) {
+		return new ButtonView({
+			superview: this.view,
+			title: text,
+			backgroundColor: color,
+			text: {
+				color: '#FFFFFF',
+				size: 36,
+				autoFontSize: false,
+				autoSize: false
+			},
+			layoutWidth: '90%',
+			layoutHeight: '15%',
+			centerX: true,
+			on : {
+				up: callback
+			}
+		});
+	}
 	
 	this.launchUI = function () {};
 
 	// event handlers 
 	function connect () {
-		console.log('Connect button tapped');
-
 		// create a socket object:
 		var host = IP_ADDRESS;
 		var port = 8338;
+
+		var logArea = this.logArea;
+		logArea.setText('Connecting to ' + IP_ADDRESS + ':' + port + '\n');
 
 		import gc.native.socketTransport;
 		var Socket = gc.native.socketTransport.Socket;
 		// creating a socket object will attempt to connect automatically
 		this._socket = new Socket(host, port);
-		// define dummy event handlers:
-		this._socket.onError = function () { console.log('Error ... :/') }
-		this._socket.onClose = function () { console.log('Socket closed') }
-		this._socket.onConnect = function () { console.log('Socket Connected!!') }
-		this._socket.onRead = function (data) { console.log('Socket received Data!!! --> ' + data) }
+		// define dummy event handlers that just update the UI:
+		this._socket.onError = function () { logArea.setText(logArea.getText() + 'Error ... :/\n') }
+		this._socket.onClose = function () { logArea.setText(logArea.getText() + 'Socket closed\n') }
+		this._socket.onConnect = function () { logArea.setText(logArea.getText() + 'Socket Connected to ' + IP_ADDRESS + ':' + port + '!\n') }
+		this._socket.onRead = function (data) { logArea.setText(logArea.getText() + 'Socket received Data!\n' + data) }
 	}
 
 	function send () {
