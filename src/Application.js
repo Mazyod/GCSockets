@@ -44,8 +44,6 @@ exports = Class(GC.Application, function () {
 		};
 		// The view that encapsulates the menu buttons
 		this.view.updateOpts({
-			layoutWidth: '100%',
-			layoutHeight: '100%',
 			layout: 'linear',
 			direction: 'vertical',
 			justifyContent: 'space-outside'
